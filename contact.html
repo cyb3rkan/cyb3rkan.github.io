@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Erkan ŞAHİN</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.contact-box{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:3rem 2rem;text-align:center;max-width:600px;margin:0 auto}
+.ct-title{font-family:'Comfortaa',cursive;font-weight:700;font-size:clamp(2rem,5vw,3rem);color:var(--text-primary);margin-bottom:0.75rem}
+.ct-title span{background:linear-gradient(135deg,var(--cyan),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ct-sub{font-size:14px;color:var(--text-muted);margin-bottom:2.5rem;line-height:1.8}
+.contact-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a class="nav-brand" href="index.html" target="_self">cyb3rkan.dev</a>
+    <a class="nav-home" href="index.html" title="Home">⌂</a>
+    <div class="nav-div"></div>
+    <div class="nav-links">
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="credentials.html">Credentials</a>
+      <a class="nav-link" href="skills.html">Skills</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link active" href="contact.html">Contact</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-dot"><div class="ndot"></div>Available</div>
+    </div>
+  </nav>
+</div>
+
+<section class="section">
+  <p class="sec-eyebrow reveal" style="text-align:center">Get in Touch</p>
+  <div class="contact-box reveal d1">
+    <div class="ct-title">Let's <span>connect</span>.</div>
+    <p class="ct-sub">İş birliği, proje fikirleri veya siber güvenlik hakkında konuşmak için ulaşın.</p>
+    <div class="contact-btns">
+      <a class="liqbtn liqbtn-c" href="mailto:erkan@cyb3rkan.dev"><div class="liqbtn-shine"></div>✉ Mail</a>
+      <a class="liqbtn liqbtn-a" href="https://github.com/cyb3rkan" target="_blank"><div class="liqbtn-shine"></div>GitHub</a>
+      <a class="liqbtn liqbtn-g" href="https://www.linkedin.com/in/erkansahin23/" target="_blank"><div class="liqbtn-shine"></div>LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-brand"><div class="fdot"></div>© 2026 ERKAN ŞAHİN</div>
+  <div class="footer-copy">cyb3rkan.dev · Built with Next.js · Deployed on Vercel</div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

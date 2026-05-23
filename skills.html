@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills — Erkan ŞAHİN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="shared.css">
+<style>
+.globe-section{padding:4rem 2rem 3rem;max-width:1200px;margin:0 auto}
+.globe-wrap{position:relative;width:100%;height:820px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#globe-canvas{cursor:grab;display:block;position:absolute;top:0;left:0;width:100%;height:100%}
+#globe-canvas:active{cursor:grabbing}
+.drag-hint{
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  font-size:11px;color:var(--text-muted);font-family:'DM Mono',monospace;
+  letter-spacing:0.08em;display:flex;align-items:center;gap:6px;opacity:0.5;
+  pointer-events:none;z-index:10;
+}
+
+/* 3D Skills Overlay */
+#skills-container{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5}
+.skill-node{
+  position:absolute;top:0;left:0;
+  display:flex;align-items:center;gap:10px;
+  background:rgba(10,12,18,0.6);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:999px;
+  padding:8px 18px 8px 12px;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition:background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  will-change:transform, opacity;
+  pointer-events:auto;
+  cursor:pointer;
+  white-space:nowrap;
+  contain:layout style paint;
+  backface-visibility:hidden;
+}
+.skill-node:hover{
+  background:rgba(25,30,45,0.8);
+  border-color:rgba(255,255,255,0.2);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5), 0 0 20px var(--glow-color, rgba(255,255,255,0.06));
+}
+.skill-node img{
+  width:22px;height:22px;flex-shrink:0;display:block;
+}
+.skill-node .fallback-dot{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;display:block;
+}
+.skill-node span{
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--text-primary);
+  letter-spacing:0.01em;
+}
+
+/* Language satellites — FIXED positions, no animation */
+#lang-satellites{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:6}
+.lang-sat{
+  position:absolute;
+  display:flex;align-items:center;gap:10px;
+  background:rgba(10,12,18,0.55);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:999px;
+  padding:10px 20px 10px 14px;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 4px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition:transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  will-change:transform;
+  pointer-events:auto;
+  cursor:pointer;
+  white-space:nowrap;
+  backface-visibility:hidden;
+}
+.lang-sat:hover{
+  transform:scale(1.08) !important;
+  border-color:rgba(255,255,255,0.25);
+  box-shadow:0 8px 40px rgba(0,0,0,0.5), 0 0 24px var(--sat-glow, rgba(255,255,255,0.1));
+}
+.lang-sat img{
+  width:24px;height:24px;flex-shrink:0;display:block;
+}
+.lang-sat .sat-dot{
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;display:block;
+}
+.lang-sat span{
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:var(--text-primary);
+  letter-spacing:0.02em;
+}
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a class="nav-brand" href="index.html">cyb3rkan.dev</a>
+    <a class="nav-home" href="index.html" title="Home">⌂</a>
+    <div class="nav-div"></div>
+    <div class="nav-links">
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="credentials.html">Credentials</a>
+      <a class="nav-link active" href="skills.html">Skills</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-dot"><div class="ndot"></div>Available</div>
+    </div>
+  </nav>
+</div>
+
+<div class="globe-section">
+  <p class="sec-eyebrow reveal">Technical Expertise</p>
+  <h2 class="sec-title reveal d1">Skills & Tools</h2>
+
+  <div class="globe-wrap reveal d2">
+    <canvas id="globe-canvas"></canvas>
+    <div id="skills-container"></div>
+    <div id="lang-satellites"></div>
+    <div class="drag-hint">⊕ Drag to rotate</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-brand"><div class="fdot"></div>© 2026 ERKAN ŞAHİN</div>
+  <div class="footer-copy">cyb3rkan.dev · Built with Next.js · Deployed on Vercel</div>
+</footer>
+
+<script>
+/* ── Scroll reveals ── */
+const io = new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ── Canvas setup ── */
+const canvas = document.getElementById('globe-canvas');
+const ctx = canvas.getContext('2d');
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+let W, H, CX, CY, R;
+
+function resize(){
+  const rect = canvas.parentElement.getBoundingClientRect();
+  W = rect.width; H = rect.height;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  canvas.width = W*DPR; canvas.height = H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  CX = W/2; CY = H/2;
+  R = Math.min(W,H)*0.30;
+}
+resize();
+window.addEventListener('resize', resize);
+
+/* ── Skills data (inner globe) ── */
+const allSkills = [
+  {label:'Python',      icon:'python',      color:'#3776AB'},
+  {label:'Java',        icon:'java',        color:'#ED8B00'},
+  {label:'Kali Linux',  icon:'kalilinux',   color:'#557C94'},
+  {label:'Wireshark',   icon:'wireshark',   color:'#1679A7'},
+  {label:'Nmap',        icon:'nmap',        color:'#4682B4'},
+  {label:'Metasploit',  icon:'metasploit',  color:'#2596CD'},
+  {label:'Burp Suite',  icon:'burpsuite',   color:'#ff6633'},
+  {label:'VirusTotal',  icon:'virustotal',  color:'#394EFF'},
+  {label:'FastAPI',     icon:'fastapi',     color:'#009688'},
+  {label:'Next.js',     icon:'nextdotjs',   color:'#ffffff'},
+  {label:'TypeScript',  icon:'typescript',  color:'#3178C6'},
+  {label:'Docker',      icon:'docker',      color:'#2496ED'},
+  {label:'Git',         icon:'git',         color:'#F05032'},
+  {label:'GitHub',      icon:'github',      color:'#ffffff'},
+  {label:'Plotly',      icon:'plotly',      color:'#3F4F75'},
+  {label:'Jupyter',     icon:'jupyter',     color:'#F37626'},
+  {label:'OpenAI',      icon:'openai',      color:'#74AA9C'},
+  {label:'pytest',      icon:'pytest',      color:'#00d9ff'},
+  {label:'OWASP',       icon:'owasp',       color:'#ffffff'},
+  {label:'Claude',      icon:'claude',      color:'#D97757'},
+];
+
+/* ── Language satellites — FIXED positions, pushed further out ── */
+const langSats = [
+  {label:'Python', icon:'python', color:'#3776AB', xPct:0.50, yPct:0.08},   // top center
+  {label:'Java',   icon:'java',   color:'#ED8B00', xPct:0.50, yPct:0.92},   // bottom center
+  {label:'C++',    icon:'cplusplus', color:'#00599C', xPct:0.04, yPct:0.50},   // far left
+  {label:'C#',     icon:'csharp', color:'#239120', xPct:0.96, yPct:0.50},   // far right
+];
+
+/* Icon source fixes — only for missing/problematic icons */
+function svgIconData(label, color){
+  const shortLabel = label === 'Nmap' ? 'Nm' : label;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="16" fill="${color}"/>
+    <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle"
+      fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="${shortLabel.length > 2 ? 24 : 28}" font-weight="700">${shortLabel}</text>
+  </svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+const ICON_OVERRIDES = {
+  python: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
+  java: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg',
+  c: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg',
+  cplusplus: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg',
+  csharp: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg',
+  nmap: svgIconData('Nmap', '#4682B4')
+};
+
+function getIconSrc(s){
+  if(ICON_OVERRIDES[s.icon]) return ICON_OVERRIDES[s.icon];
+  const c = s.color==='#ffffff'?'white':s.color.replace('#','');
+  return `https://cdn.simpleicons.org/${s.icon}/${c}`;
+}
+
+/* Preload icons */
+allSkills.forEach(s=>{
+  if(!s.icon) return;
+  const img = new Image();
+  img.src = getIconSrc(s);
+});
+
+langSats.forEach(s=>{
+  const img = new Image();
+  img.src = getIconSrc(s);
+});
+
+/* ── Fibonacci sphere ── */
+function fibSphere(n){
+  const pts=[], g=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<n;i++){
+    const y=1-(i/(n-1))*2, r=Math.sqrt(1-y*y), t=g*i;
+    pts.push({x:Math.cos(t)*r, y, z:Math.sin(t)*r});
+  }
+  return pts;
+}
+const pts = fibSphere(allSkills.length);
+
+/* ── Rotation state ── */
+let rotX = 0.15, rotY = 0;
+let isDrag = false, lx = 0, ly = 0;
+let vx = 0.004, vy = 0;
+const FRICTION = 0.96;
+const AUTO_SPEED = 0.003;
+const ROTX_MIN = -0.8, ROTX_MAX = 0.8;
+
+/* ── Shooting stars ── */
+const SHOOTING_STARS = 28;
+const shootingStars = Array.from({length:SHOOTING_STARS},()=>{
+  const angle = Math.random()*Math.PI*2;
+  const spd = 0.15+Math.random()*0.4;
+  return {
+    x: Math.random()*W, y: Math.random()*H,
+    vx: Math.cos(angle)*spd, vy: Math.sin(angle)*spd,
+    len: 40+Math.random()*100,
+    alpha: 0, targetAlpha: 0.12+Math.random()*0.22,
+    phase: Math.random()*Math.PI*2,
+    speed: 0.002+Math.random()*0.004,
+  };
+});
+
+/* ── Inner skill DOM nodes ── */
+const container = document.getElementById('skills-container');
+const domNodes = allSkills.map((s,i)=>{
+  const el = document.createElement('div');
+  el.className = 'skill-node';
+  el.style.setProperty('--glow-color', s.color+'30');
+  if(s.icon){
+    const img = document.createElement('img');
+    img.onerror = function(){
+      this.onerror = null;
+      this.src = svgIconData(s.label, s.color);
+    };
+    img.src = getIconSrc(s);
+    img.alt = s.label; img.loading = 'eager';
+    el.appendChild(img);
+  } else {
+    const dot = document.createElement('div');
+    dot.className = 'fallback-dot';
+    dot.style.background = s.color;
+    el.appendChild(dot);
+  }
+  const span = document.createElement('span');
+  span.textContent = s.label;
+  el.appendChild(span);
+  container.appendChild(el);
+  return el;
+});
+
+/* ── Satellite language DOM nodes — FIXED positions ── */
+const satContainer = document.getElementById('lang-satellites');
+const satNodes = langSats.map((s,i)=>{
+  const el = document.createElement('div');
+  el.className = 'lang-sat';
+  el.style.setProperty('--sat-glow', s.color+'25');
+  const img = document.createElement('img');
+  img.onerror = function(){
+    this.onerror = null;
+    this.src = svgIconData(s.label, s.color);
+  };
+  img.src = getIconSrc(s);
+  img.alt = s.label; img.loading = 'eager';
+  el.appendChild(img);
+  const span = document.createElement('span');
+  span.textContent = s.label;
+  el.appendChild(span);
+  satContainer.appendChild(el);
+
+  // Set fixed position immediately
+  const px = W * s.xPct;
+  const py = H * s.yPct;
+  el.style.left = px + 'px';
+  el.style.top = py + 'px';
+  el.style.transform = 'translate(-50%, -50%)';
+
+  return el;
+});
+
+// Update satellite positions on resize
+window.addEventListener('resize', ()=>{
+  langSats.forEach((s,i)=>{
+    const el = satNodes[i];
+    const px = W * s.xPct;
+    const py = H * s.yPct;
+    el.style.left = px + 'px';
+    el.style.top = py + 'px';
+  });
+});
+
+/* ── 3D math ── */
+function rotPt(p,rx,ry){
+  const x = p.x*Math.cos(ry) - p.z*Math.sin(ry);
+  const z = p.x*Math.sin(ry) + p.z*Math.cos(ry);
+  const y2 = p.y*Math.cos(rx) - z*Math.sin(rx);
+  const z2 = p.y*Math.sin(rx) + z*Math.cos(rx);
+  return {x, y:y2, z:z2};
+}
+
+/* ── Precompute wireframe paths ── */
+const wireframePaths = [];
+for(let lat=-75; lat<=75; lat+=15){
+  const r2 = R*Math.cos(lat*Math.PI/180);
+  const y0 = R*Math.sin(lat*Math.PI/180);
+  wireframePaths.push({type:'ellipse', cx:0, cy:y0, rx:r2, ry:r2*0.18});
+}
+for(let lon=0; lon<180; lon+=15){
+  const l = lon*Math.PI/180;
+  const path = [];
+  for(let lat=-90; lat<=90; lat+=3){
+    const t=lat*Math.PI/180;
+    path.push({x:Math.cos(t)*Math.cos(l), y:Math.sin(t), z:Math.cos(t)*Math.sin(l)});
+  }
+  wireframePaths.push({type:'path', points:path});
+}
+for(let lon=0; lon<180; lon+=30){
+  const l = lon*Math.PI/180;
+  const path = [];
+  for(let i=0; i<=100; i++){
+    const a = (i/100)*Math.PI*2;
+    path.push({x:Math.cos(a)*Math.cos(l), y:Math.sin(a), z:Math.cos(a)*Math.sin(l)});
+  }
+  wireframePaths.push({type:'path', points:path});
+}
+
+/* ── Render ── */
+const sorted = new Array(allSkills.length);
+const scratch = new Array(allSkills.length);
+let lastRotX = null, lastRotY = null;
+let cachedWireframe = null;
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  /* Shooting stars */
+  shootingStars.forEach(star=>{
+    star.phase += star.speed;
+    star.alpha = star.targetAlpha * (0.5+0.5*Math.sin(star.phase));
+    star.x += star.vx; star.y += star.vy;
+    if(star.x < -star.len || star.x > W+star.len || star.y < -star.len || star.y > H+star.len){
+      star.x = Math.random()*W; star.y = Math.random()*H;
+      const angle = Math.random()*Math.PI*2;
+      const spd = 0.15+Math.random()*0.4;
+      star.vx = Math.cos(angle)*spd; star.vy = Math.sin(angle)*spd;
+      star.phase = 0;
+    }
+    const tailX = star.x - star.vx*star.len*0.5;
+    const tailY = star.y - star.vy*star.len*0.5;
+    const grad = ctx.createLinearGradient(star.x, star.y, tailX, tailY);
+    grad.addColorStop(0, `rgba(200,230,255,${star.alpha.toFixed(3)})`);
+    grad.addColorStop(1, `rgba(200,230,255,0)`);
+    ctx.strokeStyle = grad; ctx.lineWidth = 1.2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(star.x, star.y); ctx.lineTo(tailX, tailY); ctx.stroke();
+  });
+
+  /* Center glow */
+  const glow = ctx.createRadialGradient(CX,CY,0,CX,CY,R*1.5);
+  glow.addColorStop(0,'rgba(100,200,255,0.04)');
+  glow.addColorStop(0.5,'rgba(60,120,180,0.012)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = glow; ctx.fillRect(0,0,W,H);
+
+  /* Wireframe — cached when rotation hasn't changed significantly */
+  const rotChanged = lastRotX === null || Math.abs(rotX-lastRotX) > 0.001 || Math.abs(rotY-lastRotY) > 0.001;
+  if(rotChanged || cachedWireframe === null){
+    lastRotX = rotX; lastRotY = rotY;
+    cachedWireframe = [];
+
+    // Latitudes
+    for(let lat=-75; lat<=75; lat+=15){
+      const r2 = R*Math.cos(lat*Math.PI/180);
+      const y0 = CY + R*Math.sin(lat*Math.PI/180);
+      cachedWireframe.push({type:'ellipse', cx:CX, cy:y0, rx:r2, ry:r2*0.18});
+    }
+    // Longitudes
+    for(let lon=0; lon<180; lon+=15){
+      const l = lon*Math.PI/180;
+      const path = [];
+      for(let lat=-90; lat<=90; lat+=3){
+        const t=lat*Math.PI/180;
+        const rp = rotPt({x:Math.cos(t)*Math.cos(l), y:Math.sin(t), z:Math.cos(t)*Math.sin(l)}, rotX, rotY);
+        path.push({x:CX+rp.x*R, y:CY-rp.y*R});
+      }
+      cachedWireframe.push({type:'path', points:path});
+    }
+    // Cross longitudes
+    for(let lon=0; lon<180; lon+=30){
+      const l = lon*Math.PI/180;
+      const path = [];
+      for(let i=0; i<=100; i++){
+        const a = (i/100)*Math.PI*2;
+        const rp = rotPt({x:Math.cos(a)*Math.cos(l), y:Math.sin(a), z:Math.cos(a)*Math.sin(l)}, rotX, rotY);
+        path.push({x:CX+rp.x*R, y:CY-rp.y*R});
+      }
+      cachedWireframe.push({type:'path', points:path});
+    }
+  }
+
+  // Draw cached wireframe
+  cachedWireframe.forEach((item, idx) => {
+    if(idx < 11) ctx.strokeStyle = 'rgba(140,210,255,0.075)';
+    else ctx.strokeStyle = 'rgba(140,210,255,0.04)';
+    ctx.lineWidth = 1;
+
+    if(item.type === 'ellipse'){
+      ctx.beginPath(); ctx.ellipse(item.cx, item.cy, item.rx, item.ry, 0, 0, Math.PI*2); ctx.stroke();
+    } else {
+      ctx.beginPath();
+      item.points.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+      ctx.stroke();
+    }
+  });
+
+  /* ── Satellite connection lines (static, from fixed positions) ── */
+  const satPositions = langSats.map(s => ({
+    x: W * s.xPct,
+    y: H * s.yPct,
+    color: s.color
+  }));
+
+  ctx.save();
+  for(let i=0;i<satPositions.length;i++){
+    for(let j=i+1;j<satPositions.length;j++){
+      const a = satPositions[i], b = satPositions[j];
+      const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+      grad.addColorStop(0, `rgba(255,255,255,0.06)`);
+      grad.addColorStop(0.5, `rgba(255,255,255,0.12)`);
+      grad.addColorStop(1, `rgba(255,255,255,0.06)`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
+    const a = satPositions[i];
+    const grad = ctx.createLinearGradient(a.x, a.y, CX, CY);
+    grad.addColorStop(0, `rgba(255,255,255,0.04)`);
+    grad.addColorStop(1, `rgba(255,255,255,0.10)`);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 0.8;
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(CX, CY); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  ctx.restore();
+
+  /* Inner skills — depth sort */
+  for(let i=0;i<allSkills.length;i++){
+    const rp = rotPt(pts[i], rotX, rotY);
+    scratch[i] = {x:rp.x, y:rp.y, z:rp.z, idx:i};
+  }
+  scratch.sort((a,b)=>a.z-b.z);
+  for(let i=0;i<allSkills.length;i++) sorted[i] = scratch[i];
+
+  for(let i=0;i<sorted.length;i++){
+    const {x,y,z,idx} = sorted[i];
+    const s = allSkills[idx];
+    const depth = (z + 1)/2;
+    const el = domNodes[idx];
+    if(depth < 0.08){
+      if(el.style.display !== 'none') el.style.display = 'none';
+      continue;
+    }
+    if(el.style.display === 'none') el.style.display = '';
+    const perspective = 900;
+    const scale = (perspective / (perspective - z*R*0.9)) * 0.9;
+    const px = CX + x * R * scale;
+    const py = CY - y * R * scale;
+    const alpha = 0.35 + depth * 0.65;
+    const transform = `translate(-50%,-50%) translate3d(${px.toFixed(1)}px,${py.toFixed(1)}px,0) scale(${scale.toFixed(3)})`;
+    if(el.style.transform !== transform) el.style.transform = transform;
+    const op = alpha.toFixed(2);
+    if(el.style.opacity !== op) el.style.opacity = op;
+    const zi = Math.round(depth*1000);
+    if(el.style.zIndex !== String(zi)) el.style.zIndex = zi;
+  }
+}
+
+/* ── Input ── */
+canvas.addEventListener('mousedown', e=>{isDrag=true; lx=e.clientX; ly=e.clientY; vx=0; vy=0;});
+window.addEventListener('mousemove', e=>{
+  if(!isDrag) return;
+  vx = (e.clientX - lx) * 0.006;
+  vy = (e.clientY - ly) * 0.005;
+  rotY += vx; rotX += vy;
+  rotX = Math.max(ROTX_MIN, Math.min(ROTX_MAX, rotX));
+  lx = e.clientX; ly = e.clientY;
+});
+window.addEventListener('mouseup', ()=>isDrag=false);
+
+canvas.addEventListener('touchstart', e=>{isDrag=true; lx=e.touches[0].clientX; ly=e.touches[0].clientY; vx=0; vy=0; e.preventDefault();},{passive:false});
+window.addEventListener('touchmove', e=>{
+  if(!isDrag) return;
+  vx = (e.touches[0].clientX - lx) * 0.006;
+  vy = (e.touches[0].clientY - ly) * 0.005;
+  rotY += vx; rotX += vy;
+  rotX = Math.max(ROTX_MIN, Math.min(ROTX_MAX, rotX));
+  lx = e.touches[0].clientX; ly = e.touches[0].clientY;
+  e.preventDefault();
+},{passive:false});
+window.addEventListener('touchend', ()=>isDrag=false);
+
+/* ── Loop with frame skipping ── */
+let lastFrame = 0;
+const TARGET_FPS = 60;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+(function animate(timestamp){
+  requestAnimationFrame(animate);
+
+  if(timestamp - lastFrame < FRAME_INTERVAL) return;
+  lastFrame = timestamp;
+
+  if(!isDrag){
+    vx *= FRICTION; vy *= FRICTION;
+    rotY += vx; rotX += vy;
+    rotX = Math.max(ROTX_MIN, Math.min(ROTX_MAX, rotX));
+    if(Math.abs(vx)<0.0008 && Math.abs(vy)<0.0006){ rotY += AUTO_SPEED; }
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

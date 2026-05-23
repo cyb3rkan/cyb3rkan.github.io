@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Erkan ŞAHİN</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.acard{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:border-color 0.2s}
+.acard:hover{border-color:rgba(255,255,255,0.15)}
+.acard-ey{font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-muted);font-family:'DM Mono',monospace;margin-bottom:1rem}
+.arow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.arow:last-child{border:none}
+.ak{color:var(--text-muted)}.av{color:var(--text-primary);font-weight:600;font-size:12px;font-family:'DM Mono',monospace}
+.av.g{color:rgba(52,211,153,0.9)}
+.triple{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+.tcard{border-radius:12px;padding:1rem}
+.tcard.p{background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.18)}
+.tcard.c{background:rgba(0,217,255,0.06);border:1px solid rgba(0,217,255,0.18)}
+.tcard.a{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.18)}
+.tt{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Mono',monospace}
+.tt-p{color:#a78bfa}.tt-c{color:#00d9ff}.tt-a{color:#f59e0b}
+.td{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.motto-box{background:var(--bg-card);border:1px solid rgba(0,217,255,0.15);border-radius:14px;padding:1.75rem;position:relative;overflow:hidden}
+.motto-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.motto-q{font-size:60px;color:rgba(0,217,255,0.1);font-family:Georgia,serif;line-height:1;position:absolute;top:0.5rem;left:1rem}
+.motto-text{font-size:18px;font-weight:700;color:var(--text-primary);letter-spacing:-0.01em;margin-bottom:0.75rem;padding-left:1rem}
+.motto-sub{font-size:13px;color:var(--text-muted);line-height:1.85;padding-left:1rem}
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a class="nav-brand" href="index.html" target="_self">cyb3rkan.dev</a>
+    <a class="nav-home" href="index.html" title="Home">⌂</a>
+    <div class="nav-div"></div>
+    <div class="nav-links">
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="credentials.html">Credentials</a>
+      <a class="nav-link" href="skills.html">Skills</a>
+      <a class="nav-link active" href="about.html">About</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-dot"><div class="ndot"></div>Available</div>
+    </div>
+  </nav>
+</div>
+
+<section class="section">
+  <p class="sec-eyebrow reveal">Who I Am</p>
+  <h2 class="sec-title reveal d1">About Me</h2>
+
+  <div class="about-grid">
+    <div class="acard reveal d1">
+      <div class="acard-ey">/ Profile</div>
+      <div class="arow"><span class="ak">Name</span><span class="av">Erkan ŞAHİN</span></div>
+      <div class="arow"><span class="ak">University</span><span class="av">Fırat Üniversitesi</span></div>
+      <div class="arow"><span class="ak">Department</span><span class="av">Bilgisayar Müh.</span></div>
+      <div class="arow"><span class="ak">Location</span><span class="av">Elazığ, TR 🇹🇷</span></div>
+      <div class="arow"><span class="ak">GitHub</span><span class="av">@cyb3rkan</span></div>
+      <div class="arow"><span class="ak">Status</span><span class="av g">● Open to work</span></div>
+    </div>
+    <div class="acard reveal d2">
+      <div class="acard-ey">/ Focus</div>
+      <div class="arow"><span class="ak">Primary</span><span class="av">SOC · Blue Team</span></div>
+      <div class="arow"><span class="ak">Research</span><span class="av">Threat Intelligence</span></div>
+      <div class="arow"><span class="ak">Practice</span><span class="av">CTF · Pen Testing</span></div>
+      <div class="arow"><span class="ak">Building</span><span class="av">AI Security Tools</span></div>
+      <div class="arow"><span class="ak">Embedded</span><span class="av">AVR C / Proteus</span></div>
+      <div class="arow"><span class="ak">Goal</span><span class="av">CEH · OSCP</span></div>
+    </div>
+  </div>
+
+  <div class="triple reveal d3">
+    <div class="tcard p"><div class="tt tt-p">Growth</div><p class="td">Sistemleri keşfeden, merak ve anlayışla yönlendirilen bir mühendis.</p></div>
+    <div class="tcard c"><div class="tt tt-c">Focus</div><p class="td">Her katmanda verimlilik ve hassasiyet üzerine derin çalışma.</p></div>
+    <div class="tcard a"><div class="tt tt-a">Craft</div><p class="td">Her satır kodda disiplin ve adanmışlık.</p></div>
+  </div>
+
+  <div class="motto-box reveal">
+    <div class="motto-q">"</div>
+    <div class="motto-text">Hack to learn. Learn to defend.</div>
+    <div class="motto-sub">Defensive security araçları geliştiriyor, CTF yarışmalarına katılıyor, AI destekli güvenlik otomasyon sistemleri inşa ediyorum. Her proje gerçek dünya güvenlik kararları gözetilerek — hexagonal mimari, kapsamlı test coverage, hash mode privacy — tasarlanıyor.</div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-brand"><div class="fdot"></div>© 2026 ERKAN ŞAHİN</div>
+  <div class="footer-copy">cyb3rkan.dev · Built with Next.js · Deployed on Vercel</div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
